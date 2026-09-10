@@ -1,0 +1,15 @@
+{
+  "name": "history-today-events",
+  "version": "1.0.0",
+  "description": "历史上的今天大事件站 - 纯前端项目",
+  "type": "module",
+  "scripts": {
+    "fetch": "node scripts/fetch-data.js",
+    "start": "vite",
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0"
+  }
+}

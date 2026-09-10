@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="历史上的今天大事件站 - 探索历史长河中的重要时刻">
+  <title>历史上的今天 - 大事件站</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-theme="light">
+  <div id="app">
+    <header class="site-header">
+      <div class="container header-inner">
+        <div class="logo-section">
+          <h1 class="site-title">📜 历史上的今天</h1>
+          <p class="site-subtitle">探索历史长河中的重要时刻</p>
+        </div>
+        <div class="header-actions">
+          <button id="sidebarToggle" class="sidebar-toggle" title="侧边栏">☰</button>
+          <button id="themeToggle" class="theme-toggle" title="切换主题">
+            <span class="theme-icon light">☀️</span>
+            <span class="theme-icon dark">🌙</span>
+          </button>
+          <button id="favToggle" class="fav-toggle" title="收藏夹">
+            <span>⭐</span>
+            <span id="favCount" class="fav-count">0</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <section class="date-bar">
+      <div class="container date-bar-inner">
+        <div class="today-display">
+          <span class="today-label">今天是：</span>
+          <span id="todayDate" class="today-date">--</span>
+        </div>
+        <div class="date-select-wrap">
+          <label class="date-label">选择日期：</label>
+          <select id="monthSelect" class="date-select">
+            <option value="1">1月</option>
+            <option value="2">2月</option>
+            <option value="3">3月</option>
+            <option value="4">4月</option>
+            <option value="5">5月</option>
+            <option value="6">6月</option>
+            <option value="7">7月</option>
+            <option value="8">8月</option>
+            <option value="9">9月</option>
+            <option value="10">10月</option>
+            <option value="11">11月</option>
+            <option value="12">12月</option>
+          </select>
+          <select id="daySelect" class="date-select">
+          </select>
+          <button id="jumpToday" class="btn btn-primary">跳转今天</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="filter-bar">
+      <div class="container">
+        <div class="category-tabs-wrap">
+          <div id="categoryTabs" class="category-tabs">
+            <button class="tab-btn active" data-category="all">全部</button>
+            <button class="tab-btn" data-category="politics">政治</button>
+            <button class="tab-btn" data-category="military">军事</button>
+            <button class="tab-btn" data-category="tech">科技</button>
+            <button class="tab-btn" data-category="culture">文化</button>
+            <button class="tab-btn" data-category="sports">体育</button>
+            <button class="tab-btn" data-category="economy">经济</button>
+            <button class="tab-btn" data-category="birth">名人诞辰</button>
+            <button class="tab-btn" data-category="death">名人逝世</button>
+            <button class="tab-btn" data-category="disaster">重大灾害</button>
+            <button class="tab-btn" data-category="society">社会事件</button>
+          </div>
+        </div>
+
+        <div class="secondary-filters">
+          <div class="search-wrap">
+            <input type="text" id="searchInput" class="search-input" placeholder="搜索事件标题、人物、地点、关键词...">
+            <button id="searchClear" class="search-clear" title="清除搜索">✕</button>
+          </div>
+
+          <div class="sort-wrap">
+            <label class="filter-label">排序：</label>
+            <select id="sortSelect" class="sort-select">
+              <option value="year-desc">年份 新→旧</option>
+              <option value="year-asc">年份 旧→新</option>
+              <option value="importance-desc">重要性 高→低</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <main class="main-content">
+      <div class="container layout-wrap">
+        <div class="content-area">
+          <div id="loadingState" class="state-view loading-state">
+            <div class="spinner"></div>
+            <p>正在加载历史数据...</p>
+          </div>
+
+          <div id="emptyState" class="state-view empty-state" style="display:none;">
+            <div class="empty-icon">🔍</div>
+            <h3>未找到匹配的历史事件</h3>
+            <p>试试调整筛选条件或搜索关键词</p>
+            <button id="resetFilters" class="btn btn-secondary">重置筛选</button>
+          </div>
+
+          <div id="favEmptyState" class="state-view empty-state" style="display:none;">
+            <div class="empty-icon">⭐</div>
+            <h3>收藏夹是空的</h3>
+            <p>点击事件卡片上的 ⭐ 按钮收藏喜欢的历史事件</p>
+          </div>
+
+          <div id="timelineContainer" class="timeline-container" style="display:none;">
+            <div class="timeline-stats">
+              <span id="resultCount" class="result-count">共 0 条事件</span>
+              <span id="currentFilter" class="current-filter"></span>
+            </div>
+            <div id="timeline" class="timeline"></div>
+          </div>
+        </div>
+
+        <aside id="sidebar" class="sidebar">
+          <div class="sidebar-section">
+            <h3 class="sidebar-title">🎯 本月大事件 TOP10</h3>
+            <div id="monthTop10" class="top10-list"></div>
+          </div>
+
+          <div class="sidebar-section">
+            <h3 class="sidebar-title">🎋 本年速查</h3>
+            <div class="zodiac-info">
+              <div class="zodiac-item">
+                <span class="zodiac-label">生肖</span>
+                <span id="yearZodiac" class="zodiac-value">--</span>
+              </div>
+              <div class="zodiac-item">
+                <span class="zodiac-label">星座范围</span>
+                <span id="constellationRange" class="zodiac-value">--</span>
+              </div>
+              <div class="zodiac-item">
+                <span class="zodiac-label">朝代速查</span>
+                <span id="dynastyInfo" class="zodiac-value">--</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="sidebar-section">
+            <h3 class="sidebar-title">🎲 随机探索</h3>
+            <button id="randomJump" class="btn btn-random">🎲 随机跳转日期</button>
+            <button id="randomEvent" class="btn btn-random">📖 随机事件</button>
+          </div>
+        </aside>
+      </div>
+    </main>
+
+    <button id="backToTop" class="back-to-top" title="回到顶部">↑</button>
+
+    <div id="detailModal" class="detail-modal" style="display:none;">
+      <div class="detail-overlay" data-close="overlay"></div>
+      <div class="detail-content">
+        <button class="detail-close" data-close="btn" title="关闭">✕</button>
+        <div id="detailBody" class="detail-body"></div>
+      </div>
+    </div>
+
+    <div id="sidebarMask" class="sidebar-mask" style="display:none;"></div>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>© 2024 历史上的今天大事件站 | 以史为鉴，可以知兴替</p>
+      </div>
+    </footer>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
